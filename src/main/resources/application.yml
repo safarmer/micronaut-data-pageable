@@ -11,3 +11,9 @@ netty:
   default:
     allocator:
       max-order: 3
+
+logger:
+  levels:
+    com.example: TRACE
+    io.micronaut.http: DEBUG
+    io.micronaut.data.sql.query: TRACE

@@ -1,4 +1,4 @@
 datasources:
   default:
-    url: jdbc:tc:mysql:8:///db
-    driverClassName: org.testcontainers.jdbc.ContainerDatabaseDriver
+    url: jdbc:p6spy:tc:mysql:8:///db?TC_TMPFS=/var/lib/mysql:rw&TC_DAEMON=true
+    driverClassName: com.p6spy.engine.spy.P6SpyDriver
