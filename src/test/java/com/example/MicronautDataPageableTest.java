@@ -52,6 +52,77 @@ class MicronautDataPageableTest implements WithAssertions {
   void page() {
     var uri =
         UriBuilder.of("/page").queryParam("owner", "me").queryParam("token", "found").toString();
+    Page<Sample> page =
+        client.toBlocking().retrieve(HttpRequest.GET(uri), Argument.of(Page.class, Sample.class));
+    assertThat(page)
+        .hasSize(1)
+        .satisfiesExactly(
+            it ->
+                assertThat(it)
+                    .satisfies(
+                        sample -> assertThat(sample.token()).isEqualTo("found"),
+                        sample -> assertThat(sample.owner()).isEqualTo("me")));
+  }
+
+  @Test
+  void page2() {
+    var uri =
+        UriBuilder.of("/page2").queryParam("token", "found").toString();
+    Page<Sample> page =
+        client.toBlocking().retrieve(HttpRequest.GET(uri), Argument.of(Page.class, Sample.class));
+    assertThat(page)
+        .hasSize(2)
+        .satisfiesExactly(
+            it ->
+                assertThat(it)
+                    .satisfies(
+                        sample -> assertThat(sample.token()).isEqualTo("found"),
+                        sample -> assertThat(sample.owner()).isEqualTo("me")),
+            it ->
+                assertThat(it)
+                    .satisfies(
+                        sample -> assertThat(sample.token()).isEqualTo("found"),
+                        sample -> assertThat(sample.owner()).isEqualTo("you")));
+  }
+
+  @Test
+  void slice() {
+    var uri =
+        UriBuilder.of("/slice").queryParam("owner", "me").queryParam("token", "found").toString();
+    Slice<Sample> slice =
+        client.toBlocking().retrieve(HttpRequest.GET(uri), Argument.of(Slice.class, Sample.class));
+    assertThat(slice)
+        .hasSize(1)
+        .satisfiesExactly(
+            it ->
+                assertThat(it)
+                    .satisfies(
+                        sample -> assertThat(sample.token()).isEqualTo("found"),
+                        sample -> assertThat(sample.owner()).isEqualTo("me")));
+  }
+
+  @Test
+  void list() {
+    var uri =
+        UriBuilder.of("/list").queryParam("owner", "me").queryParam("token", "found").toString();
+    List<Sample> list =
+        client
+            .toBlocking()
+            .retrieve(HttpRequest.GET(uri), Argument.of(List.class, Argument.of(Sample.class)));
+    assertThat(list)
+        .hasSize(1)
+        .satisfiesExactly(
+            it ->
+                assertThat(it)
+                    .satisfies(
+                        sample -> assertThat(sample.token()).isEqualTo("found"),
+                        sample -> assertThat(sample.owner()).isEqualTo("me")));
+  }
+
+  @Test
+  void pageProjections() {
+    var uri =
+        UriBuilder.of("/p/page").queryParam("owner", "me").queryParam("token", "found").toString();
     Page<SampleProjection> page =
         client
             .toBlocking()
@@ -72,9 +143,9 @@ class MicronautDataPageableTest implements WithAssertions {
   }
 
   @Test
-  void slice() {
+  void sliceProjections() {
     var uri =
-        UriBuilder.of("/slice").queryParam("owner", "me").queryParam("token", "found").toString();
+        UriBuilder.of("/p/slice").queryParam("owner", "me").queryParam("token", "found").toString();
     Slice<SampleProjection> slice =
         client
             .toBlocking()
@@ -95,9 +166,9 @@ class MicronautDataPageableTest implements WithAssertions {
   }
 
   @Test
-  void list() {
+  void listProjections() {
     var uri =
-        UriBuilder.of("/list").queryParam("owner", "me").queryParam("token", "found").toString();
+        UriBuilder.of("/p/list").queryParam("owner", "me").queryParam("token", "found").toString();
     List<SampleProjection> list =
         client
             .toBlocking()

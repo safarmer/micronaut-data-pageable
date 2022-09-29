@@ -35,20 +35,44 @@ public class Application {
   }
 
   @Get("/page")
-  Page<SampleProjection> page(@QueryValue String owner, @Nullable @QueryValue String token, Pageable page) {
+  Page<Sample> page(@QueryValue String owner, @Nullable @QueryValue String token, Pageable page) {
     log.debug("/page?start={}&token={} [page={}]", owner, token, page);
     return repo.getSamplesPage(owner, token, page);
   }
 
+  @Get("/page2")
+  Page<Sample> page2(@Nullable @QueryValue String token, Pageable page) {
+    log.debug("/page?token={} [page={}]", token, page);
+    return repo.getSamplesPageContrived(token, token, page);
+  }
+
   @Get("/slice")
-  Slice<SampleProjection> slice(@QueryValue String owner, @Nullable @QueryValue String token, Pageable page) {
+  Slice<Sample> slice(@QueryValue String owner, @Nullable @QueryValue String token, Pageable page) {
     log.debug("/slice?start={}&token={} [page={}]", owner, token, page);
     return repo.getSamplesSlice(owner, token, page);
   }
 
   @Get("/list")
-  List<SampleProjection> list(@QueryValue String owner, @Nullable @QueryValue String token, Pageable page) {
+  List<Sample> list(@QueryValue String owner, @Nullable @QueryValue String token, Pageable page) {
     log.debug("/list?start={}&token={} [page={}]", owner, token, page);
     return repo.getSamplesList(owner, token, page);
+  }
+
+  @Get("/p/page")
+  Page<SampleProjection> pageProjection(@QueryValue String owner, @Nullable @QueryValue String token, Pageable page) {
+    log.debug("/page?start={}&token={} [page={}]", owner, token, page);
+    return repo.getSamplesPageProjection(owner, token, page);
+  }
+
+  @Get("/p/slice")
+  Slice<SampleProjection> sliceProjection(@QueryValue String owner, @Nullable @QueryValue String token, Pageable page) {
+    log.debug("/slice?start={}&token={} [page={}]", owner, token, page);
+    return repo.getSamplesSliceProjection(owner, token, page);
+  }
+
+  @Get("/p/list")
+  List<SampleProjection> listProjection(@QueryValue String owner, @Nullable @QueryValue String token, Pageable page) {
+    log.debug("/list?start={}&token={} [page={}]", owner, token, page);
+    return repo.getSamplesListProjection(owner, token, page);
   }
 }

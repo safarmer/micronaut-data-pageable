@@ -23,7 +23,6 @@ dependencies {
   implementation("io.micronaut.reactor:micronaut-reactor")
   implementation("io.projectreactor:reactor-core")
   implementation("io.projectreactor:reactor-tools:3.4.23")
-  implementation("io.projectreactor:reactor-test")
   runtimeOnly("ch.qos.logback:logback-classic")
   runtimeOnly("mysql:mysql-connector-java")
   testImplementation("org.testcontainers:junit-jupiter")
